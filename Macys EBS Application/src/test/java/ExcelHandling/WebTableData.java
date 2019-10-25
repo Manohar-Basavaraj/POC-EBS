@@ -35,6 +35,8 @@ import com.EBSApplication.LoginPage;
 public class WebTableData extends LoginPage {
 	public WebDriver driver;
 	List<WebElement> columnElements;
+	
+	
 	int rowCount, columnCount;
 	Map.Entry mentry2 = null;
 
@@ -42,11 +44,11 @@ public class WebTableData extends LoginPage {
 	ArrayList<String> data = new ArrayList<String>();
 	String[][] tableVal;
 	WebElement myDynamicElement;
-	Map<Integer, String> hm = new TreeMap<>(Collections.reverseOrder());
+	Map<Integer, String> hm = new TreeMap<Integer, String>(Collections.reverseOrder());
 
-	Map<String, String> hm2 = new TreeMap<>(Collections.reverseOrder());
+	Map<Integer, String> hm2 = new TreeMap<Integer, String>(Collections.reverseOrder());
 
-	Map<String, String> hm3 = new TreeMap<>(Collections.reverseOrder());
+	Map<Integer, String> hm3 = new TreeMap<Integer, String>(Collections.reverseOrder());
 	// List<String> values = new ArrayList<String>();
 	String values;
 	String actionDate;
@@ -103,13 +105,7 @@ public class WebTableData extends LoginPage {
 
 		}
 
-		for (String i : data) {
-
-			System.out.println(i);
-
-			// writeFunction();
-
-		}
+	
 
 	}
 
@@ -135,7 +131,7 @@ public class WebTableData extends LoginPage {
 					// System.out.println(driver.findElement(By.xpath("//*[@id='ApprHistTable']/table[2]/tbody/tr["
 					// + i + "]/th[" + j + "]")).getText());
 					// values.add(tableVal[i - 1][j - 1]);
-				} else if (j == 1 || j == 4) {
+				} else {
 
 					if (j == 1) {
 
@@ -167,72 +163,46 @@ public class WebTableData extends LoginPage {
 											"//*[@id='ApprHistTable']/table[2]/tbody/tr[" + i + "]/td[" + j + "]"))
 									.getText();
 							values = tableVal[i - 1][j - 1];
-
+				
 						}
 
 					}
 
-					// get table data values
-
-				} else {
-
-					/*
-					 * if (j == 2) {
-					 * 
-					 * tableVal[i - 1][j - 1] = driver .findElement(
-					 * By.xpath("//*[@id='ApprHistTable']/table[2]/tbody/tr[" + i + "]/td[" + j +
-					 * "]")) .getText(); actionDate = tableVal[i - 1][j - 1];
-					 * System.out.println("Approver Name "+actionDate);
-					 * 
-					 * }
-					 * 
-					 * if (j == 5) {
-					 * 
-					 * tableVal[i - 1][j - 1] = driver .findElement(
-					 * By.xpath("//*[@id='ApprHistTable']/table[2]/tbody/tr[" + i + "]/td[" + j +
-					 * "]")) .getText(); approverName = tableVal[i - 1][j - 1];
-					 * 
-					 * System.out.println("Actrion Date"+approverName);
-					 * 
-					 * }
-					 */
-
-					// continue;
-					
-				
-
-							if (j == 2) {
-
-								tableVal[i - 1][j - 1] = driver
-										.findElement(By.xpath(
-												"//*[@id='ApprHistTable']/table[2]/tbody/tr[" + i + "]/td[" + j + "]"))
-										.getText();
-								approverName = tableVal[i - 1][j - 1];
-
-								hm2.put(values, approverName);
-
-								System.out.println("Approver Name INSIDE CONDITION " + approverName);
-
-							}
-
-							if (j == 5) {
-
-								tableVal[i - 1][j - 1] = driver
-										.findElement(By.xpath(
-												"//*[@id='ApprHistTable']/table[2]/tbody/tr[" + i + "]/td[" + j + "]"))
-										.getText();
-								actionDate = tableVal[i - 1][j - 1];
-
-								hm3.put(values, actionDate);
-
-								System.out.println("DATE INSIDE CONDITION " + actionDate);
-							}
-
 					
 					
 					
+					//Set New HshMap Values
 					
-				}
+					
+					if (j == 2) {
+
+						tableVal[i - 1][j - 1] = driver
+								.findElement(By.xpath(
+										"//*[@id='ApprHistTable']/table[2]/tbody/tr[" + i + "]/td[" + j + "]"))
+								.getText();
+						approverName = tableVal[i - 1][j - 1];
+
+						hm2.put(key, approverName);
+
+						System.out.println("Approver Name INSIDE CONDITION " + approverName);
+
+					}
+
+					if (j == 5) {
+
+						tableVal[i - 1][j - 1] = driver
+								.findElement(By.xpath(
+										"//*[@id='ApprHistTable']/table[2]/tbody/tr[" + i + "]/td[" + j + "]"))
+								.getText();
+						actionDate = tableVal[i - 1][j - 1];
+
+						hm3.put(key, actionDate);
+
+						System.out.println("DATE INSIDE CONDITION " + actionDate);
+					}
+					
+
+				} 
 			}
 
 			hm.put(key, values);
@@ -268,6 +238,8 @@ public class WebTableData extends LoginPage {
 
 		Set<?> set2 = hm.entrySet();
 		Iterator iterator2 = set2.iterator();
+		
+		String sequenceNumber ="";
 
 		while (iterator2.hasNext()) {
 			mentry2 = (Map.Entry) iterator2.next();
@@ -281,6 +253,8 @@ public class WebTableData extends LoginPage {
 				System.out.println("Sequence Num: " + mentry2.getKey() + "   Action: " + mentry2.getValue());
 
 				System.out.println("----------------PENDING-----------------------------");
+				
+				sequenceNumber = mentry2.getKey().toString();
 
 				break;
 
@@ -291,6 +265,8 @@ public class WebTableData extends LoginPage {
 				System.out.println("Sequence Num: " + mentry2.getKey() + "  Action: " + mentry2.getValue());
 
 				System.out.println("----------------APPROVED-----------------------------");
+				
+				sequenceNumber = mentry2.getKey().toString();
 
 				break;
 			} else {
@@ -300,12 +276,17 @@ public class WebTableData extends LoginPage {
 			}
 
 		}
+		
+		
+		data.add(sequenceNumber);
 
 	}
 
 	public void actionDate() {
 
 		System.out.println("TESTING" + mentry2.getValue());
+		
+		String action ="";
 
 		Set<?> set4 = hm3.entrySet();
 		Iterator iterator4 = set4.iterator();
@@ -313,21 +294,55 @@ public class WebTableData extends LoginPage {
 
 			Map.Entry mentry4 = (Map.Entry) iterator4.next();
 
-			System.out.println("Action Date: " + mentry4.getValue());
+			/*System.out.println("Action Date: " + mentry4.getValue());
 
 			if (mentry2.getValue().equals("Approved")) {
 
 				System.out.println("Action Date: " + mentry4.getValue());
 
+			}*/
+			
+			
+			if (mentry2.getValue().equals("Pending")) {
+
+				System.out.println("----------------PENDING-----------------------------");
+
+				System.out.println("Sequence Num: " + mentry4.getKey() + "   DATE: " + mentry4.getValue());
+
+				System.out.println("----------------PENDING-----------------------------");
+				
+				action = mentry4.getValue().toString();
+
+				break;
+
+			} else if (mentry2.getValue().equals("Approved")) {
+
+				System.out.println("----------------APPROVED----------------------------");
+
+				System.out.println("Sequence Num: " + mentry4.getKey() + "  DATE: " + mentry4.getValue());
+
+				System.out.println("----------------APPROVED-----------------------------");
+				
+				action = mentry4.getValue().toString();
+
+				break;
+			} else {
+
+				continue;
+
 			}
 
 		}
+		
+		data.add(action);
 
 	}
 
 	public void approverName() {
 
 		System.out.println("TESTING2" + mentry2.getValue());
+		
+		String name = "";
 
 		Set<?> set3 = hm2.entrySet();
 
@@ -336,19 +351,74 @@ public class WebTableData extends LoginPage {
 
 			Map.Entry mentry3 = (Map.Entry) iterator3.next();
 
-			System.out.println("Manager Name: " + mentry3.getValue());
+			/*System.out.println("Manager Name: " + mentry3.getValue());
 
 			if (mentry2.getValue().equals("Pending")) {
 
 				System.out.println("Manager Name: " + mentry3.getValue());
 
-			}
+			}*/
 
 			// System.out.println("Key is: " + mentry3.getKey() + " & Value is: " +
 			// mentry3.getValue());
+			
+			if (mentry2.getValue().equals("Pending")) {
+
+				System.out.println("----------------PENDING-----------------------------");
+
+				System.out.println("Sequence Num: " + mentry3.getKey() + "   NAME: " + mentry3.getValue());
+
+				System.out.println("----------------PENDING-----------------------------");
+				
+				name = mentry3.getValue().toString();
+
+				break;
+
+			} else if (mentry2.getValue().equals("Approved")) {
+
+				System.out.println("----------------APPROVED----------------------------");
+
+				System.out.println("Sequence Num: " + mentry3.getKey() + "  NAME: " + mentry3.getValue());
+
+				System.out.println("----------------APPROVED-----------------------------");
+				
+				name = mentry3.getValue().toString();
+
+				break;
+			} else {
+
+				continue;
+
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 		}
+		
+		 data.add(name);
 
 	}
+	
+	
+	public void finalValues() {
+		
+			for (String i : data) {
+
+		System.out.println("FINAL VALUES ARE"+i);
+
+		// writeFunction();
+
+	}
+		
+	}
+
 
 }

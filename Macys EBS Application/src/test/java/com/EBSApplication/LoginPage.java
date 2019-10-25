@@ -31,8 +31,7 @@ public class LoginPage extends ReadExcel
 	@BeforeTest
 	public void launchbrowser() throws InterruptedException {
 
-		System.setProperty("webdriver.ie.driver",
-				"C:\\Users\\deepthi.singh\\Desktop\\test2\\Macys EBS Application\\drivers\\IEDriverServer.exe");
+		System.setProperty("webdriver.ie.driver","C:\\Users\\deepthi.singh\\git1\\Macys EBS Application\\drivers\\IEDriverServer.exe");
 		driver = new InternetExplorerDriver();
 		driver.manage().deleteAllCookies();
 		driver.get("https://ebs.federated.fds/OA_HTML/AppsLogin");
@@ -49,7 +48,7 @@ public class LoginPage extends ReadExcel
 
 		Properties pro = new Properties();
 		File f = new File(
-				"C:\\Users\\deepthi.singh\\Desktop\\test2\\Macys EBS Application\\configproperties\\config.properties");
+				"C:\\Users\\deepthi.singh\\git1\\Macys EBS Application\\configproperties\\config.properties");
 		FileInputStream FileIo;
 		try {
 			FileIo = new FileInputStream(f);
@@ -115,6 +114,8 @@ public class LoginPage extends ReadExcel
 		ed.seqNumDate();
 		ed.actionDate();
 		ed.approverName();
+		
+	ed.finalValues();
 				
 
 		
